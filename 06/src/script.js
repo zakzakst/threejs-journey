@@ -6,6 +6,18 @@ import * as THREE from 'three'
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
 
+/**
+ * Cursor
+ */
+const cursor = {
+    x: 0,
+    y: 0,
+}
+window.addEventListener('mousemove', (event) => {
+    cursor.x = event.clientX / sizes.width - 0.5
+    cursor.y = - (event.clientY / sizes.height - 0.5)
+})
+
 // Sizes
 const sizes = {
     width: 800,
@@ -23,7 +35,17 @@ const mesh = new THREE.Mesh(
 scene.add(mesh)
 
 // Camera
-const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height)
+// NOTE: 続き34:21から
+// const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
+const aspectRatio = sizes.width / sizes.height
+const camera = new THREE.OrthographicCamera(
+    - 1 * aspectRatio,
+    1 * aspectRatio,
+    1,
+    - 1,
+    0.1,
+    100
+)
 camera.position.x = 2
 camera.position.y = 2
 camera.position.z = 2
@@ -44,7 +66,12 @@ const tick = () =>
     const elapsedTime = clock.getElapsedTime()
 
     // Update objects
-    mesh.rotation.y = elapsedTime;
+    // mesh.rotation.y = elapsedTime;
+
+    // Update camera
+    camera.position.x = cursor.x * 3
+    camera.position.y = cursor.y * 3
+    camera.lookAt(new THREE.Vector3())
 
     // Render
     renderer.render(scene, camera)
