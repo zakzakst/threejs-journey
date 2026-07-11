@@ -1,8 +1,6 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 
-// TODO: 34:55から
-
 /**
  * Textures
  */
@@ -32,7 +30,10 @@ loadingManager.onError = () => {
 
 const textureLoader = new THREE.TextureLoader(loadingManager)
 const colorTexture = textureLoader.load(
-    '/textures/door/color.jpg',
+    // '/textures/door/color.jpg',
+    // '/textures/checkerboard-1024x1024.png',
+    // '/textures/checkerboard-8x8.png',
+    '/textures/minecraft.png',
     () => {
         console.log('load')
     },
@@ -44,6 +45,19 @@ const colorTexture = textureLoader.load(
     }
 )
 colorTexture.colorSpace = THREE.SRGBColorSpace
+// colorTexture.repeat.x = 2
+// colorTexture.repeat.y = 3
+// colorTexture.wrapS = THREE.RepeatWrapping
+// colorTexture.wrapT = THREE.RepeatWrapping
+// colorTexture.offset.x = 0.5
+// colorTexture.offset.y = 0.5
+// colorTexture.rotation = Math.PI / 4
+// colorTexture.center.x = 0.5
+// colorTexture.center.y = 0.5
+colorTexture.generateMipmaps = false
+colorTexture.minFilter = THREE.NearestFilter
+colorTexture.magFilter = THREE.NearestFilter
+
 const alphaTexture = textureLoader.load('/textures/door/alpha.jpg')
 
 /**
@@ -59,6 +73,9 @@ const scene = new THREE.Scene()
  * Object
  */
 const geometry = new THREE.BoxGeometry(1, 1, 1)
+// const geometry = new THREE.SphereGeometry(1, 32, 32)
+// const geometry = new THREE.ConeGeometry(1, 1, 32)
+console.log(geometry.attributes.uv)
 const material = new THREE.MeshBasicMaterial({ map: colorTexture })
 const mesh = new THREE.Mesh(geometry, material)
 scene.add(mesh)
