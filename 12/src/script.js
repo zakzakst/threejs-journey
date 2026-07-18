@@ -4,6 +4,7 @@ import GUI from 'lil-gui'
 // import typefaceFont from 'three/examples/fonts/helvetiker_bold.typeface.json'
 import { FontLoader } from 'three/examples/jsm/Addons.js'
 import { TextGeometry } from 'three/examples/jsm/Addons.js'
+import { TorusGeometry } from 'three'
 
 /**
  * Base
@@ -61,11 +62,38 @@ fontLoader.load(
         // )
         textGeometry.center()
         // const textMaterial = new THREE.MeshBasicMaterial()
-        const textMaterial = new THREE.MeshMatcapMaterial()
-        textMaterial.matcap = matcapTexture
+        // const textMaterial = new THREE.MeshMatcapMaterial()
+        // textMaterial.matcap = matcapTexture
+
+        const material = new THREE.MeshMatcapMaterial({ matcap: matcapTexture})
+
         // textMaterial.wireframe = true
-        const text = new THREE.Mesh(textGeometry, textMaterial)
+        const text = new THREE.Mesh(textGeometry, material)
         scene.add(text)
+
+        console.time('donuts')
+
+        const donutGeometry = new TorusGeometry(0.3, 0.2, 20, 45)
+
+        for(let i = 0; i < 300; i++) {
+            const donut = new THREE.Mesh(donutGeometry, material)
+
+            donut.position.x = (Math.random() - 0.5) * 10
+            donut.position.y = (Math.random() - 0.5) * 10
+            donut.position.z = (Math.random() - 0.5) * 10
+
+            donut.rotation.x = Math.random() * Math.PI
+            donut.rotation.y = Math.random() * Math.PI
+
+            const scale = Math.random()
+            donut.scale.x = scale
+            donut.scale.y = scale
+            donut.scale.z = scale
+
+            scene.add(donut)
+        }
+
+        console.timeEnd('donuts')
     }
 )
 
